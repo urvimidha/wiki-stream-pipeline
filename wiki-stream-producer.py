@@ -36,18 +36,22 @@ while True: #infinite loop
                 # Ignore Wikimedia's artificial canary events
                 if event_data.get("meta", {}).get("domain") == "canary": #synthetic "tests" into the live stream to check system health
                     continue
-                if event_data.get('wiki')=='enwiki':
+                if event_data.get('wiki')=='enwiki' and event_data.get('type') in ('edit', 'new'):
                     payload={
                     "ts" : event_data.get("timestamp"), #.get("") to prevent KeyValue Error 
                     "t" : event_data.get("type"),
                     "server_name" : event_data.get("server_name"),
                     "user" : event_data.get("user"),
-                    "title" : event_data.get("title")
+                    "title" : event_data.get("title"),
+                    "length": event_data.get("length", {"old": 0, "new": 0}),
+                    "comment": event_data.get("comment", ""),
+                    "bot": event_data.get("bot", False),
+                    "minor": event_data.get("minor", False)
                     }
 
-                    # Send the dictionary payload to Kafka    
+                    # Send the dictionary payload to Kafka
                     producer.send(topic=TOPIC_NAME, value=payload)
-                    print(f"Send to Kafka -> Page: {payload['title']} | User: {payload['user']}")
+                    print(f"Send to Kafka -> Page: {payload['title']} | User: {payload['user']} | Type: {payload['t']} | Length: {payload['length']} | Comment: {payload['comment']} | Bot: {payload['bot']} | Minor: {payload['minor']}")
 
     except Exception as e:
         print(f"Connection interrupted {e}, retrying in 5 seconds ...")

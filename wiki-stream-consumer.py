@@ -14,7 +14,7 @@ consumer = KafkaConsumer(
     bootstrap_servers=['localhost:9092'],
     auto_offset_reset='earliest',    # Read from the beginning if no offset exists yet
     enable_auto_commit=True,         # Automatically mark messages as read
-    group_id='wiki-consumer-group-v2',  # Consumer group ID for tracking offsets
+    group_id='wiki-consumer-group-v1',  # Consumer group ID for tracking offsets
     value_deserializer=lambda x: json.loads(x.decode('utf-8')) # Decode bytes back to python dict
 )
 
