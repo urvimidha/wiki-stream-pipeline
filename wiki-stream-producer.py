@@ -1,5 +1,5 @@
 # Ingestion Layer: Main script streaming Wikimedia changes to Kafka
-# Wikimedia SSE -> Kafka
+# Wikimedia SSE -> Kafka Broker
 
 import json
 import time
@@ -55,7 +55,10 @@ while True: #infinite loop
 
 # source venv/bin/activate
 # docker compose up -d
-# python wiki_stream_producer.py
+# python wiki-stream-producer.py
+
+# Creating a virtual environment
+# python -m venv venv
 
 # import json
 # import time
